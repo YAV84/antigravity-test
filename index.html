@@ -225,6 +225,65 @@
             transform: translateX(4px) translateY(-4px);
         }
 
+        .poem-display {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(251, 113, 133, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            transition: opacity 0.5s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .generate-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 1.1rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--primary);
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            background: rgba(251, 113, 133, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(251, 113, 133, 0.3);
+        }
+
+        .generate-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            transition: transform 0.5s ease;
+        }
+
+        .generate-btn:hover svg {
+            transform: rotate(180deg);
+        }
+
         .floating-particles {
             position: absolute;
             top: 0;
@@ -247,18 +306,104 @@
             <h1>For Sheilla</h1>
             <p>Click below to open your email client with a special poem ready to send to Sheilla.</p>
 
-            <!-- Mailto link heavily URI encoded to preserve line breaks -->
-            <a href="mailto:sheilla@example.com?subject=A%20Poem%20For%20You&body=Dear%20Sheilla%2C%0D%0A%0D%0AIn%20quiet%20moments%20when%20the%20world%20is%20still%2C%0D%0AMy%20thoughts%20of%20you%20the%20empty%20spaces%20fill.%0D%0AWith%20every%20dawn%20and%20every%20star%20above%2C%0D%0AYou%20are%20the%20endless%20center%20of%20my%20love.%0D%0A%0D%0AForever%20yours%2C%0D%0AYann"
-                class="send-btn">
-                <span>Send the Poem</span>
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
-            </a>
+            <div id="poem-display" class="poem-display">
+                <!-- Poem will be inserted here -->
+            </div>
+
+            <div class="action-buttons">
+                <button id="generate-btn" class="generate-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                    <span>New Poem</span>
+                </button>
+
+                <!-- Mailto link heavily URI encoded to preserve line breaks -->
+                <a id="send-btn" href="#" class="send-btn">
+                    <span>Send the Poem</span>
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
+        // Poem Generator Logic
+        const lines1 = [
+            "In quiet moments when the world is still,",
+            "When morning light breaks through the gentle skies,",
+            "As evening shadows fall across the hill,",
+            "Through shifting seasons and the years that pass,",
+            "Whenever whispered breezes touch the trees,"
+        ];
+
+        const lines2 = [
+            "My soaring thoughts of you the silence fill.",
+            "I find my joy reflected in your eyes.",
+            "Your memory remains a vivid thrill.",
+            "My heart recalls the beauty of your laugh.",
+            "I feel your spirit carried on the breeze."
+        ];
+
+        const lines3 = [
+            "With every dawn and every star above,",
+            "In every melody and sweetest song,",
+            "No matter where my wandering steps may bound,",
+            "Like gentle rivers flowing to the sea,",
+            "Beyond the limits of the painted sky,"
+        ];
+
+        const lines4 = [
+            "You are the endless center of my love.",
+            "It is beside your soul that I belong.",
+            "In you my greatest treasure I have found.",
+            "My truest path will always lead to thee.",
+            "My love for you will never fade or die."
+        ];
+
+        function getRandomLine(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generatePoem() {
+            const poemDisplay = document.getElementById('poem-display');
+            
+            // Fade out
+            poemDisplay.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Generate new poem
+                const line1 = getRandomLine(lines1);
+                const line2 = getRandomLine(lines2);
+                const line3 = getRandomLine(lines3);
+                const line4 = getRandomLine(lines4);
+                
+                const poemHTML = `${line1}<br>${line2}<br>${line3}<br>${line4}`;
+                const rawPoemText = `${line1}\n${line2}\n${line3}\n${line4}`;
+                
+                // Update display
+                poemDisplay.innerHTML = poemHTML;
+                
+                // Update mailto link
+                const subject = encodeURIComponent("A Poem For You");
+                const body = encodeURIComponent(`Dear Sheilla,\n\n${rawPoemText}\n\nForever yours,\nYann`);
+                const mailtoUrl = `mailto:sheilla@example.com?subject=${subject}&body=${body}`;
+                
+                document.getElementById('send-btn').href = mailtoUrl;
+                
+                // Fade in
+                poemDisplay.style.opacity = '1';
+            }, 300); // Wait for fade out
+        }
+
+        // Initialize generator events
+        document.getElementById('generate-btn').addEventListener('click', generatePoem);
+        
+        // Generate initial poem
+        generatePoem();
+
         // Simple particle effect for extra aesthetics
         function createParticles() {
             const container = document.getElementById('particles');
