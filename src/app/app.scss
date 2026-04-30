@@ -1,0 +1,164 @@
+.background-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.glass-card {
+  width: 100%;
+  max-width: 650px;
+  padding: 40px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    font-style: italic;
+    font-family: var(--font-heading);
+  }
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+  
+  .form-group {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .glass-card {
+    padding: 24px;
+  }
+}
+
+/* Toggle Group for Attending */
+.toggle-group {
+  margin-bottom: 30px;
+  
+  .radio-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: 10px;
+  }
+  
+  .radio-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    
+    input[type="radio"] {
+      display: none;
+    }
+    
+    &.selected {
+      background: var(--color-primary);
+      color: #111;
+      border-color: var(--color-primary);
+    }
+    
+    &:hover:not(.selected) {
+      background: rgba(212, 175, 55, 0.1);
+    }
+  }
+}
+
+/* Guest Card */
+.guest-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  
+  h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-body);
+  }
+}
+
+.actions-row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+.success-message {
+  text-align: center;
+  padding: 40px 20px;
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+  }
+}

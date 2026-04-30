@@ -1,0 +1,115 @@
+<div class="background-container">
+  <div class="glass-card">
+    <header class="form-header">
+      <h1>Weekend at the Castle</h1>
+      <p class="subtitle">Join us in Champagne for a weekend of celebration</p>
+    </header>
+
+    <div *ngIf="submitted" class="success-message">
+      <h2>Thank You!</h2>
+      <p>Your response has been recorded. We look forward to seeing you in Champagne!</p>
+    </div>
+
+    <form *ngIf="!submitted" [formGroup]="rsvpForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Attending Toggle -->
+      <div class="form-group toggle-group">
+        <label>Will you be attending?</label>
+        <div class="radio-buttons">
+          <label class="radio-label" [class.selected]="rsvpForm.get('attending')?.value === true">
+            <input type="radio" formControlName="attending" [value]="true"> Yes, I'll be there
+          </label>
+          <label class="radio-label" [class.selected]="rsvpForm.get('attending')?.value === false">
+            <input type="radio" formControlName="attending" [value]="false"> Regretfully decline
+          </label>
+        </div>
+      </div>
+
+      <!-- Primary Guest Details -->
+      <div class="section-title">Your Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" placeholder="Jean">
+          <div class="error" *ngIf="rsvpForm.get('firstName')?.touched && rsvpForm.get('firstName')?.invalid">
+            First name is required.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" placeholder="Dupont">
+          <div class="error" *ngIf="rsvpForm.get('lastName')?.touched && rsvpForm.get('lastName')?.invalid">
+            Last name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" placeholder="jean.dupont@example.com">
+          <div class="error" *ngIf="rsvpForm.get('email')?.touched && rsvpForm.get('email')?.invalid">
+            Please enter a valid email address.
+          </div>
+        </div>
+        <div class="form-group" *ngIf="rsvpForm.get('attending')?.value">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" formControlName="phone" placeholder="+33 6 12 34 56 78">
+          <div class="error" *ngIf="rsvpForm.get('phone')?.touched && rsvpForm.get('phone')?.invalid">
+            Phone number is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Guests Section -->
+      <ng-container *ngIf="rsvpForm.get('attending')?.value">
+        <div class="section-title">Additional Guests</div>
+        
+        <div formArrayName="additionalGuests">
+          <div *ngFor="let guest of additionalGuests.controls; let i=index" [formGroupName]="i" class="guest-card">
+            <div class="guest-header">
+              <h3>{{ guest.get('type')?.value === 'plusOne' ? 'Plus One' : 'Child' }}</h3>
+              <button type="button" class="btn-icon remove-btn" (click)="removeGuest(i)">✕</button>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" formControlName="firstName" placeholder="First Name">
+                <div class="error" *ngIf="guest.get('firstName')?.touched && guest.get('firstName')?.invalid">
+                  First name is required.
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" formControlName="lastName" placeholder="Last Name">
+                <div class="error" *ngIf="guest.get('lastName')?.touched && guest.get('lastName')?.invalid">
+                  Last name is required.
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row" *ngIf="guest.get('type')?.value === 'kid'">
+              <div class="form-group">
+                <label>Age</label>
+                <input type="number" formControlName="age" min="0" placeholder="Age">
+                <div class="error" *ngIf="guest.get('age')?.touched && guest.get('age')?.invalid">
+                  Please enter a valid age.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <button type="button" class="btn btn-outline" (click)="addGuest('plusOne')">+ Add Plus One</button>
+          <button type="button" class="btn btn-outline" (click)="addGuest('kid')">+ Add Child</button>
+        </div>
+      </ng-container>
+
+      <button type="submit" class="btn btn-primary submit-btn">
+        {{ rsvpForm.get('attending')?.value ? 'Confirm RSVP' : 'Send Response' }}
+      </button>
+    </form>
+  </div>
+</div>
